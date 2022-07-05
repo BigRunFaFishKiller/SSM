@@ -106,7 +106,12 @@ public class UserController {
         return returnObject;
     }
 
-
+    /**
+     * 安全退出功能的实现
+     * @param response
+     * @param session
+     * @return
+     */
     @RequestMapping("/settings/qx/user/logout.do")
     public String logout(HttpServletResponse response, HttpSession session) {
         //清空cookie
