@@ -11,9 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class UserController {
 
+    //跳转登录界面
     @RequestMapping("/settings/qx/user/login")
     public String toLogin() {
         return "settings/qx/user/login";
     }
+
+
+
 
 }
