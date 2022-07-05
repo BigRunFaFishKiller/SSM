@@ -38,6 +38,16 @@ public class UserController {
         return "settings/qx/user/login";
     }
 
+    /**
+     * 登录功能的实现
+     * @param loginAct
+     * @param loginPwd
+     * @param isRemPwd
+     * @param request
+     * @param response
+     * @param session
+     * @return
+     */
     @RequestMapping("/settings/qx/user/login.do")
     @ResponseBody
     public Object login(String loginAct, String loginPwd, String isRemPwd, HttpServletRequest request,HttpServletResponse response, HttpSession session) {
@@ -94,6 +104,22 @@ public class UserController {
             }
         }
         return returnObject;
+    }
+
+
+    @RequestMapping("/settings/qx/user/logout.do")
+    public String logout(HttpServletResponse response, HttpSession session) {
+        //清空cookie
+        Cookie c1 = new Cookie("loginAct", "");
+        c1.setMaxAge(0);
+        response.addCookie(c1);
+        Cookie c2 = new Cookie("loginPwd", "");
+        c1.setMaxAge(0);
+        response.addCookie(c2);
+        //销毁Session
+        session.invalidate();
+        //跳转首页
+        return "redirect:/";
     }
 
 }

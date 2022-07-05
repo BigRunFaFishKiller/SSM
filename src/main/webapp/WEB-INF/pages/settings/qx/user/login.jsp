@@ -12,7 +12,7 @@
 <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$(function () {
-				//给整个窗口加按下键盘时间
+			 	//给整个窗口加按下键盘时间
 				$(window).keydown(function (event) {
 					//按下回车键则提交请求
 					if(event.keyCode == 13) {
