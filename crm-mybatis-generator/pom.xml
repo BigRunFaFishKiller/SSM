@@ -8,7 +8,13 @@
     <artifactId>crm-mybatis-generator</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.29</version>
+        </dependency>
+    </dependencies>
 
     <!--逆向工程插件-->
     <build>
