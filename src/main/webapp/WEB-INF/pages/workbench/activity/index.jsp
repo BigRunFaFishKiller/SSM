@@ -19,9 +19,65 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 <script type="text/javascript">
 
 	$(function(){
-		
-		
-		
+		//给创建按钮添加单击事件
+		$("#createActivityBtn").click(function () {
+			//弹出创建市场活动的模态窗口
+			$("#createActivityModal").modal("show");
+		})
+		//给保存按钮添加单击事件
+		$("#saveCreateActivity").click(function () {
+			//收集参数
+			var owner = $("#create-marketActivityOwner").val();
+			var name = $.trim($("#create-marketActivityName").val());
+			var startDate = $.trim($("#create-startDate").val());
+			var endDate = $.trim($("#create-endDate").val());
+			var cost = $.trim($("#create-cost").val());
+			var description = $.trim($("#create-description").val());
+			//表单验证
+			if(owner == "") {
+				alert("所有者不能为空");
+				return;
+			}
+			if(name == "") {
+				alert("名称不能为空");
+				return;
+			}
+			if(startDate != "" && endDate != "") {
+				//使用字符串大小比较日期大小
+				if(endDate < startDate) {
+					alert("结束日期不能比开始日期小")
+				}
+			}
+			//正则表达式判断非负数
+			if(!/^(([1-9]\d*)|0)$/.test(cost)) {
+				alert("成本只能是非负数")
+				return;
+			}
+			//发送请求
+			$.ajax({
+				url:"workbench/activity/saveCreateActivity.do",
+				data:{
+					owner:owner,
+					name:name,
+					startDate:startDate,
+					endDate:endDate,
+					cost:cost,
+					description:description
+				},
+				type:'post',
+				dataType:'json',
+				success:function (data) {
+					if(data.code == 1) {
+						//关闭模态窗口
+						$("#createActivityModal").modal("hide");
+						//刷新市场活动列
+					} else {
+						//提示信息
+						alert(data.message)
+					}
+				}
+			})
+		})
 	});
 	
 </script>
@@ -58,13 +114,13 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						</div>
 						
 						<div class="form-group">
-							<label for="create-startTime" class="col-sm-2 control-label">开始日期</label>
+							<label for="create-startDate" class="col-sm-2 control-label">开始日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-startTime">
+								<input type="text" class="form-control" id="create-startDate">
 							</div>
-							<label for="create-endTime" class="col-sm-2 control-label">结束日期</label>
+							<label for="create-endDate" class="col-sm-2 control-label">结束日期</label>
 							<div class="col-sm-10" style="width: 300px;">
-								<input type="text" class="form-control" id="create-endTime">
+								<input type="text" class="form-control" id="create-endDate">
 							</div>
 						</div>
                         <div class="form-group">
@@ -75,9 +131,9 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
                             </div>
                         </div>
 						<div class="form-group">
-							<label for="create-describe" class="col-sm-2 control-label">描述</label>
+							<label for="create-description" class="col-sm-2 control-label">描述</label>
 							<div class="col-sm-10" style="width: 81%;">
-								<textarea class="form-control" rows="3" id="create-describe"></textarea>
+								<textarea class="form-control" rows="3" id="create-description"></textarea>
 							</div>
 						</div>
 						
@@ -86,7 +142,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+					<button type="button" class="btn btn-primary" id=saveCreateActivity>保存</button>
 				</div>
 			</div>
 		</div>
@@ -243,7 +299,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			</div>
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 5px;">
 				<div class="btn-group" style="position: relative; top: 18%;">
-				  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createActivityModal"><span class="glyphicon glyphicon-plus"></span> 创建</button>
+				  <button type="button" class="btn btn-primary" id="createActivityBtn"><span class="glyphicon glyphicon-plus"></span> 创建</button>
 				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editActivityModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
 				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>

@@ -65,7 +65,7 @@ public class UserController {
             returnObject.setMessage("用户名或密码错误");
         } else {                    //进一步判断账号是否合法可用
             String expireTime = user.getExpireTime();           //获取过期时间
-            String now = DataUtils.formateDateTime(new Date(), "yyyy-MM-dd HH:mm:ss"); //获取当前时间
+            String now = DataUtils.formateDateTime(new Date()); //获取当前时间
             if((now.compareTo(expireTime) > 0)) {
                 //登录失败， 账号过期
                 returnObject.setCode(Constants.RETURN_OBJECT_CODE_FAIL);

@@ -19,8 +19,8 @@ public class DataUtils {
      * @param format 传入的格式
      * @return
      */
-    public static String formateDateTime(Date date, String format) {
-        SimpleDateFormat sdf = new SimpleDateFormat(format);
+    public static String formateDateTime(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return sdf.format(date);
     }
 
