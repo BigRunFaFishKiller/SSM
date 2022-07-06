@@ -26,6 +26,8 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 		})
 		//给保存按钮添加单击事件
 		$("#saveCreateActivity").click(function () {
+			//重置表单
+			$("#createActivityForm").get(0).reset();
 			//收集参数
 			var owner = $("#create-marketActivityOwner").val();
 			var name = $.trim($("#create-marketActivityName").val());
@@ -96,7 +98,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				</div>
 				<div class="modal-body">
 				
-					<form class="form-horizontal" role="form">
+					<form class="form-horizontal" role="form" id="createActivityForm">
 					
 						<div class="form-group">
 							<label for="create-marketActivityOwner" class="col-sm-2 control-label">所有者<span style="font-size: 15px; color: red;">*</span></label>
