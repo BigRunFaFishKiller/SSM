@@ -69,4 +69,6 @@ public interface ActivityMapper {
      * @return
      */
     int selectCountOfActivityByCondition(Map<String, Object> map);
+
+
 }
