@@ -15,7 +15,9 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
-
+	<link rel="stylesheet" type="text/css" href="jquery/bs_pagination-master/css/jquery.bs_pagination.min.css">
+	<script type="text/javascript" src="jquery/bs_pagination-master/js/jquery.bs_pagination.min.js"></script>
+	<script type="text/javascript" src="jquery/bs_pagination-master/localization/en.js"></script>
 <script type="text/javascript">
 
 	$(function(){
@@ -83,25 +85,27 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 		});
 
 		//市场活动主页加载完成，查询所有数据的第一页以及数据总条数
-		queryActivityByConditionForPage();
+		queryActivityByConditionForPage(1, 10);
 
 
 		//给查询按钮添加单击事件
 		$("#queryActivityBtn").click(function () {
 			//查询符合条件的第一页数据，以及符合条件的总条数
-			queryActivityByConditionForPage();
+			queryActivityByConditionForPage(1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
 		})
+
+		//页面按钮单击跳转
 	});
 
-	function queryActivityByConditionForPage() {
+	function queryActivityByConditionForPage(pageNo, pageSize) {
 		//市场活动主页加载完成，查询所有数据的第一页以及数据总条数
 		//收集参数
 		var name = $("#query-name").val();
 		var owner = $("#query-owner").val();
 		var startDate = $("#query-startDate").val();
 		var endDate = $("#query-endDate").val();
-		var pageNo = 1;
-		var pageSize = 10;
+		//var pageNo = 1;
+		//var pageSize = 10;
 		//发送请求
 		$.ajax({
 			url:"workbench/activity/queryActivityByConditionForPage.do",
@@ -130,6 +134,22 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					htmlStr += "</tr>"
 				});
 				$("#tBody").html(htmlStr);//html覆盖显示
+				var totalPages = 1;
+				totalPages = Math.ceil(data.totalRows / pageSize);
+				//调用分页工具函数，显示翻页信息
+				$("#demo_pag1").bs_pagination({
+					currentPage:pageNo, //当前页数
+					rowsPerPage:pageSize, //每页显示条数
+					totalRows:data.totalRows, //总条数
+					totalPages:totalPages, //总页数，必填数据
+					visiblePageLinks:5, //一组最多显示的页数
+					showGoToPage:true, //显示前往某一页的快捷方式
+					showRowsPerPage:true, //显示每页显示的条数信息
+					showRowsInfo:true, //显示记录信息
+					onChangePage: function (event, pageObj) {  //pageObj存储着关于页数等信息，即上面的属性
+						queryActivityByConditionForPage(pageObj.currentPage, pageObj.rowsPerPage)
+					} //当用户切换页号，自动执行该部分代码,可以返回切换页号后的页数和每页条数
+				});
 			}
 		})
 	}
@@ -392,8 +412,9 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					</tbody>
 				</table>
 			</div>
-			
-			<div style="height: 50px; position: relative;top: 30px;">
+
+			<div id="demo_pag1">
+			<%--<div style="height: 50px; position: relative;top: 30px;">
 				<div>
 					<button type="button" class="btn btn-default" style="cursor: default;">共<b id="totalRows">50</b>条记录</button>
 				</div>
@@ -428,7 +449,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				</div>
 			</div>
 			
-		</div>
+		</div>--%>
 		
 	</div>
 </body>
