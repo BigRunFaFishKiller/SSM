@@ -91,4 +91,23 @@ public class ActivityController {
         return resultMap;
     }
 
+    @RequestMapping("/workbench/avtivity/deleteActivityByIds.do")
+    @ResponseBody
+    public Object deleteActivityByIds(String[] id) {
+        ReturnObject returnObject = new ReturnObject();
+        try {
+            //调用Service方法
+            int ret = activityService.deleteActivityByIds(id);
+            if(ret > 0) {
+                returnObject.setCode(Constants.RETURN_OBJECT_CODE_SUCCESS);
+            } else {
+                returnObject.setCode(Constants.RETURN_OBJECT_CODE_FAIL);
+                returnObject.setMessage("系统忙，请稍后重试");
+            }
+        } catch (Exception e) {
+            returnObject.setCode(Constants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("系统忙，请稍后重试");
+        }
+        return returnObject;
+    }
 }

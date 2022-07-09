@@ -71,4 +71,10 @@ public interface ActivityMapper {
     int selectCountOfActivityByCondition(Map<String, Object> map);
 
 
+    /**
+     * 根据id批量删除
+     * @param ids
+     * @return
+     */
+    int deleteActivityByIds(String[] ids);
 }

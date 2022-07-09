@@ -23,14 +23,14 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 	$(function(){
 		//给创建按钮添加单击事件
 		$("#createActivityBtn").click(function () {
+			//重置表单
+			$("#createActivityForm").get(0).reset();
 			//弹出创建市场活动的模态窗口
 			$("#createActivityModal").modal("show");
 		});
 
 		//给保存按钮添加单击事件
 		$("#saveCreateActivity").click(function () {
-			//重置表单
-			//$("#createActivityForm").get(0).reset();
 			//收集参数
 			var owner = $("#create-marketActivityOwner").val();
 			var name = $.trim($("#create-marketActivityName").val());
@@ -109,6 +109,38 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				$("#checkAll").prop("checked", false);
 			}
 
+		})
+		//给删除按钮添加单击事件
+		$("#deleteActivityBtn").click(function () {
+			//收集参数
+			var checkedIds = $("#tBody input[type = 'checkbox']:checked");
+			if(checkedIds.size() == 0) {
+				alert("至少选中一条记录");
+				return;
+			}
+			//弹出提示窗口
+			if(window.confirm("确定删除吗？")) {
+				var ids = "";
+				$.each(checkedIds, function () {
+					ids += "id=" + this.value + "&"
+				})
+				ids = ids.substr(0, ids.length - 1);
+				//向后台发请求
+				$.ajax({
+					url: 'workbench/avtivity/deleteActivityByIds.do',
+					data: ids,
+					type: 'post',
+					dataType: 'json',
+					success: function (data) {
+						if (data.code == "1") {
+							//刷新列表,显示第一页数据，保持每页数据不变
+							queryActivityByConditionForPage(1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
+						} else {
+							alert(data.message);
+						}
+					}
+				})
+			}
 		})
 	});
 
@@ -392,7 +424,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button type="button" class="btn btn-primary" id="createActivityBtn"><span class="glyphicon glyphicon-plus"></span> 创建</button>
 				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editActivityModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
-				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+				  <button type="button" class="btn btn-danger" id="deleteActivityBtn"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				<div class="btn-group" style="position: relative; top: 18%;">
                     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#importActivityModal" ><span class="glyphicon glyphicon-import"></span> 上传列表数据（导入）</button>
