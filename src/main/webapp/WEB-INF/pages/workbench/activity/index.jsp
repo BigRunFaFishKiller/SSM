@@ -232,9 +232,25 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				}
 			})
 		})
-		//给批量导出按钮添加单击事件
+		//给全部导出按钮添加单击事件
 		$("#exportActivityAllBtn").click(function () {
 			window.location.href = "workbench/activity/exportAllActivities.do";
+		})
+
+		//给选择导出添加单击事件
+		$("#exportActivityXzBtn").click(function () {
+			//收集参数
+			var checkedIds = $("#tBody input[type = 'checkbox']:checked");
+			if(checkedIds.size() == 0) {
+				alert("至少选中一条记录");
+				return;
+			}
+			var ids = "";
+			$.each(checkedIds, function () {
+				ids += this.value + "&"
+			})
+			ids = ids.substr(0, ids.length - 1);
+			window.location.href = "workbench/activity/exportActivitiesByIds.do/" + ids;
 		})
 	});
 

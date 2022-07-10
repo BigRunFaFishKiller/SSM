@@ -14,6 +14,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -244,4 +245,78 @@ public class ActivityController {
         out.flush();
     }
 
+
+   //用站位符的方式发送同步请求，将参数封装在链接末尾，然后使用正则表达式分割参数
+    @RequestMapping("/workbench/activity/exportActivitiesByIds.do/{id}")
+    public void exportActivitiesByIds(@PathVariable String id, HttpServletResponse response) throws Exception {
+        String[] ids = id.split("\\&");
+        List<Activity> activityList = activityService.queryActivitiesByIds(ids);
+        //生成Excel文件
+        HSSFWorkbook wb = new HSSFWorkbook();
+        HSSFSheet sheet = wb.createSheet("市场活动列表");
+        HSSFRow row = sheet.createRow(0);
+        HSSFCell cell = row.createCell(0);
+        cell.setCellValue("id");
+        cell = row.createCell(1);
+        cell.setCellValue("所有者");
+        cell = row.createCell(2);
+        cell.setCellValue("名称");
+        cell = row.createCell(3);
+        cell.setCellValue("开始日期");
+        cell = row.createCell(4);
+        cell.setCellValue("结束日期");
+        cell = row.createCell(5);
+        cell.setCellValue("成本");
+        cell = row.createCell(6);
+        cell.setCellValue("描述");
+        cell = row.createCell(7);
+        cell.setCellValue("创建时间");
+        cell = row.createCell(8);
+        cell.setCellValue("创建者");
+        cell = row.createCell(9);
+        cell.setCellValue("修改时间");
+        cell = row.createCell(10);
+        cell.setCellValue("修改者");
+        //遍历activityList，创建HSSFRow对象，生成所有行数据
+        if (activityList != null && activityList.size() > 0) {
+            Activity activity = null;
+            for (int i = 0; i < activityList.size(); i++) {
+                activity = activityList.get(i);
+                //每遍历一个Activity，生成一行
+                row = sheet.createRow(i + 1);
+                cell = row.createCell(0);
+                cell.setCellValue(activity.getId());
+                cell = row.createCell(1);
+                cell.setCellValue(activity.getOwner());
+                cell = row.createCell(2);
+                cell.setCellValue(activity.getName());
+                cell = row.createCell(3);
+                cell.setCellValue(activity.getStartDate());
+                cell = row.createCell(4);
+                cell.setCellValue(activity.getEndDate());
+                cell = row.createCell(5);
+                cell.setCellValue(activity.getCost());
+                cell = row.createCell(6);
+                cell.setCellValue(activity.getDescription());
+                cell = row.createCell(7);
+                cell.setCellValue(activity.getCreateTime());
+                cell = row.createCell(8);
+                cell.setCellValue(activity.getCreateBy());
+                cell = row.createCell(9);
+                cell.setCellValue(activity.getEditTime());
+                cell = row.createCell(10);
+                cell.setCellValue(activity.getEditBy());
+            }
+        }
+        //将生成的文件下载到客户端
+        //设置响应类型
+        response.setContentType("application/octet-stream;charset=UTF-8");
+        //设置响应头信息
+        response.addHeader("Content-Disposition", "attachment;filename=activityList.xlsx");
+        ServletOutputStream out = response.getOutputStream();
+        wb.write(out);
+        //关闭资源，刷新资源
+        wb.close();
+        out.flush();
+    }
 }
