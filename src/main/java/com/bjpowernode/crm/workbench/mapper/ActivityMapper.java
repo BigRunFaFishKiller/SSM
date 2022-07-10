@@ -92,4 +92,6 @@ public interface ActivityMapper {
      * @return
      */
     int updateActivity(Activity activity);
+
+    List<Activity> selectAllActivities();
 }

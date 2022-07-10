@@ -77,7 +77,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						//关闭模态窗口
 						$("#createActivityModal").modal("hide");
 						//刷新市场活动列
-						queryActivityByConditionForPage(1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'))
+						queryActivityByConditionForPage(1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
 					} else {
 						//提示信息
 						alert(data.message)
@@ -179,7 +179,6 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 		})
 		//给修改市场活动的更新按钮添加单击事件
 		$("#saveEditActivityBtn").click(function () {
-			alert("aaa1")
 			//收集参数
 			var id = $("#edit-id").val();
 			var owner = $.trim($("#edit-marketActivityOwner").val());
@@ -232,6 +231,10 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					}
 				}
 			})
+		})
+		//给批量导出按钮添加单击事件
+		$("#exportActivityAllBtn").click(function () {
+			window.location.href = "workbench/activity/exportAllActivities.do";
 		})
 	});
 
@@ -519,7 +522,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				</div>
 				<div class="btn-group" style="position: relative; top: 18%;">
                     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#importActivityModal" ><span class="glyphicon glyphicon-import"></span> 上传列表数据（导入）</button>
-                    <button id="exportActivityAllBtn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-export"></span> 下载列表数据（批量导出）</button>
+                    <button id="exportActivityAllBtn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-export"></span> 下载列表数据（全部导出）</button>
                     <button id="exportActivityXzBtn" type="button" class="btn btn-default"><span class="glyphicon glyphicon-export"></span> 下载列表数据（选择导出）</button>
                 </div>
 			</div>
