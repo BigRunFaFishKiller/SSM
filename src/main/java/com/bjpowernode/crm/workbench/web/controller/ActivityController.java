@@ -22,13 +22,12 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.swing.*;
 import java.io.*;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.bjpowernode.crm.commons.utils.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @Author:大润发杀鱼匠
@@ -246,7 +245,7 @@ public class ActivityController {
     }
 
 
-   //用站位符的方式发送同步请求，将参数封装在链接末尾，然后使用正则表达式分割参数
+   //用站位符的方式发送同步请求，将参数封装在链接末尾，然后使用正则表达式分割参数，可能存在id过多导致地址栏长度不足
     @RequestMapping("/workbench/activity/exportActivitiesByIds.do/{id}")
     public void exportActivitiesByIds(@PathVariable String id, HttpServletResponse response) throws Exception {
         String[] ids = id.split("\\&");
@@ -318,5 +317,82 @@ public class ActivityController {
         //关闭资源，刷新资源
         wb.close();
         out.flush();
+    }
+
+
+    /**
+     * 文件上传
+     * 需要配置SpringMvc的文件解析器
+     * @return
+     */
+    /*@RequestMapping("/workbench/activity/fileUpLoad.do")
+    @ResponseBody
+    public Object fileUpLoad(MultipartFile myFile) throws IOException {   //将文件所有信息封装在MultipartFile
+        //在指定位置生成文件
+        String filename = myFile.getOriginalFilename();//生成文件名
+        File file = new File("E:\\java project\\crm-project\\crm\\src\\test\\resources\\" + filename);
+        myFile.transferTo(file);
+        //返回响应信息
+        ReturnObject returnObject = new ReturnObject();
+        returnObject.setCode(Constants.RETURN_OBJECT_CODE_SUCCESS);
+        returnObject.setMessage("上传成功");
+        return returnObject;
+    }*/
+
+
+    @RequestMapping("/workbench/activity/importActivity.do")
+    @ResponseBody
+    public Object importActivity(MultipartFile activityFile, HttpSession session) {
+        List<Activity> activityList = new ArrayList<>();
+        InputStream is = null;
+        HSSFWorkbook wb = null;
+        ReturnObject returnObject = new ReturnObject();
+        try {
+            is = activityFile.getInputStream();
+            wb = new HSSFWorkbook(is);
+            HSSFSheet sheet = wb.getSheetAt(0);
+            HSSFRow row = null;
+            HSSFCell cell = null;
+            Activity activity = null;
+            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
+                row = sheet.getRow(i);
+                activity = new Activity();
+                activity.setId(UUIDUtils.getUUID());
+                activity.setOwner(((User)session.getAttribute(Constants.SESSION_USER)).getId());
+                activity.setCreateBy(((User)session.getAttribute(Constants.SESSION_USER)).getId());
+                activity.setCreateTime(DataUtils.formateDateTime(new Date()));
+                for (int j = 0; j < row.getLastCellNum(); j++) {
+                    cell = row.getCell(j);
+                    String value = HSSFUtils.getCellValueForStr(cell);
+                    switch (j) {
+                        case 0:
+                            activity.setName(value);
+                            break;
+                        case 1:
+                            activity.setStartDate(value);
+                            break;
+                        case 2:
+                            activity.setEndDate(value);
+                            break;
+                        case 3:
+                            activity.setCost(value);
+                            break;
+                        case 4:
+                            activity.setDescription(value);
+                            break;
+                    }
+                }
+                activityList.add(activity);
+            }
+            int ret = activityService.saveCreateActivityByList(activityList);
+
+            returnObject.setCode(Constants.RETURN_OBJECT_CODE_SUCCESS);
+            returnObject.setReturnData(ret);
+        } catch (Exception e) {
+            e.printStackTrace();
+            returnObject.setCode(Constants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("系统忙，请稍后");
+        }
+        return returnObject;
     }
 }
