@@ -50,6 +50,9 @@
     delete from tbl_activity_remark
     where id = #{id,jdbcType=CHAR}
   </delete>
+  <delete id="deleteActivityRemarkById">
+    delete from tbl_activity_remark where id = #{id}
+  </delete>
   <insert id="insert" parameterType="com.bjpowernode.crm.workbench.domain.ActivityRemark" >
     <!--
       WARNING - @mbggenerated
