@@ -30,4 +30,6 @@ public interface ActivityService {
     List<Activity> queryActivitiesByIds(String[] ids);
 
     int saveCreateActivityByList(List<Activity> activityList);
+
+    Activity queryActivityForDetailById(String id);
 }
