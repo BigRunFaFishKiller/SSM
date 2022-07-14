@@ -14,5 +14,5 @@ public interface ActivityRemarkService {
 
     List<ActivityRemark> queryActivityRemarkForDetailByActivityId(String activityId);
 
-
+    int saveCreateActivityRemark(ActivityRemark activityRemark);
 }
