@@ -49,6 +49,70 @@
     from tbl_clue
     where id = #{id,jdbcType=CHAR}
   </select>
+  <select id="selectClueForPage" resultType="com.bjpowernode.crm.workbench.domain.Clue">
+    select c.id, c.fullname, c.company, c.phone, c.mphone, d1.value as source, u1.name as owner, d2.value
+    from tbl_clue c
+    join tbl_user u1 on c.owner = u1.id
+    left join tbl_dic_value d1 on c.source = d1.id
+    left join tbl_dic_value d2 on c.state = d2.id
+    <where>
+      <if test="id != null and id !=''">
+        and c.id like '%' #{id} '%'
+      </if>
+      <if test="company != null and company !=''">
+        and c.company like '%' #{company} '%'
+      </if>
+      <if test="phone != null and phone !=''">
+        and c.phone like '%' #{phone} '%'
+      </if>
+      <if test="source != null and source !=''">
+        and d1.id = #{source}
+      </if>
+      <if test="owner != null and owner !=''">
+        and u1.name like '%' #{owner} '%'
+      </if>
+      <if test="mphone != null and mphone !=''">
+        and c.mphone like '%' #{mphone} '%'
+      </if>
+      <if test="state != null and state !=''">
+        and d2.id = #{state}
+      </if>
+    </where>
+    order by c.create_time desc
+    limit #{beginNo}, #{pageSize}
+
+
+  </select>
+  <select id="countClueByCondition" resultType="java.lang.Integer">
+    select count(*)
+    from tbl_clue c
+    join tbl_user u1 on c.owner = u1.id
+    left join tbl_dic_value d1 on c.source = d1.id
+    left join tbl_dic_value d2 on c.state = d2.id
+    <where>
+      <if test="id != null and id !=''">
+        and c.id like '%' #{id} '%'
+      </if>
+      <if test="company != null and company !=''">
+        and c.company like '%' #{company} '%'
+      </if>
+      <if test="phone != null and phone !=''">
+        and c.phone like '%' #{phone} '%'
+      </if>
+      <if test="source != null and source !=''">
+        and d1.id = #{source}
+      </if>
+      <if test="owner != null and owner !=''">
+        and u1.name like '%' #{owner} '%'
+      </if>
+      <if test="mphone != null and mphone !=''">
+        and c.mphone like '%' #{mphone} '%'
+      </if>
+      <if test="state != null and state !=''">
+        and d2.id = #{state}
+      </if>
+    </where>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     <!--
       WARNING - @mbggenerated

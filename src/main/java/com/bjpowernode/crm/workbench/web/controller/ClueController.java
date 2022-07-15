@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:大润发杀鱼匠
@@ -77,6 +79,28 @@ public class ClueController {
         }
 
         return returnObject;
+    }
+
+    @RequestMapping("/workbench/clue/queryClueForPage.do")
+    @ResponseBody
+    public Object queryClueForPage(String fullname, String company, String phone, String source, String owner, String mphone,
+                                   String state, int pageNo, int pageSize) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("fullname", fullname);
+        map.put("company", company);
+        map.put("phone", phone);
+        map.put("source", source);
+        map.put("owner", owner);
+        map.put("mphone", mphone);
+        map.put("state", state);
+        map.put("beginNo", (pageNo - 1) * pageSize);
+        map.put("pageSize", pageSize);
+        List<Clue> clueList = clueService.queryClueForPage(map);
+        int totalRows = clueService.countClueByCondition(map);
+        Map<String, Object> resultMap = new HashMap<>();
+        resultMap.put("clueList",clueList);
+        resultMap.put("totalRows",totalRows);
+        return resultMap;
     }
 
 

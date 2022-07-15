@@ -79,7 +79,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
                         //关闭模态窗口
                         $("#createClueModal").modal("hide");
                         //刷新线索列表，显示第一页数据，保持每页显示条数不变(作业)
-
+						queryActivityByConditionForPage(1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
                     }else{
                         //提示信息
                         alert(data.message);
@@ -90,12 +90,74 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
             });
         });
 
+		queryClueByConditionForPage(1, 10);
+
+		//给查询按钮添加单击事件
+		$("#queryBtn").click(function () {
+			queryClueByConditionForPage(1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
+		})
 
 	});
 
 	//分页查询线索函数
-	function queryActivityByConditionForPage(pageNo, pageSize){
+	function queryClueByConditionForPage(pageNo, pageSize){
 		//收集参数
+		var fullname = $.trim($("#queryFullname").val());
+		var owner = $("#queryOwner").val();
+		var company = $.trim($("#queryCompany").val());
+		var phone = $.trim($("#queryPhone").val());
+		var mphone = $.trim($("#queryMphone").val());
+		var state = $("#queryState").val();
+		var source = $("#querySource").val();
+		//发送请求
+		$.ajax({
+			url: 'workbench/clue/queryClueForPage.do',
+			data: {
+				fullname: fullname,
+				owner: owner,
+				company: company,
+				phone: phone,
+				mphone: mphone,
+				state: state,
+				source: source,
+				pageNo: pageNo,
+				pageSize: pageSize
+			},
+			type: 'post',
+			dataType: 'json',
+			success: function (data) {
+				var html = "";
+				$.each(data.clueList, function (index, obj) {
+					html += "<tr>";
+					html += "<td><input type=\"checkbox\" /></td>";
+					html += "<td><a style=\"text-decoration: none; cursor: pointer;\" onclick=\"window.location.href='detail.html';\">" + obj.fullname + "</a></td>";
+					html += "<td>" + obj.company + "</td>";
+					html += "<td>" + obj.phone + "</td>";
+					html += "<td>" + obj.mphone + "</td>";
+					html += "<td>" + obj.source + "</td>";
+					html += "<td>" + obj.owner + "</td>";
+					html += "<td>" + obj.state + "</td>";
+					html += "</tr>";
+				});
+				$("#tBody").html(html);
+				var totalPages = 1;
+				totalPages = Math.ceil(data.totalRows / pageSize);
+				//调用分页工具函数，显示翻页信息
+				$("#demo_pag1").bs_pagination({
+					currentPage: pageNo, //当前页数
+					rowsPerPage: pageSize, //每页显示条数
+					totalRows: data.totalRows, //总条数
+					totalPages: totalPages, //总页数，必填数据
+					visiblePageLinks: 5, //一组最多显示的页数
+					showGoToPage: true, //显示前往某一页的快捷方式
+					showRowsPerPage: true, //显示每页显示的条数信息
+					showRowsInfo: true, //显示记录信息
+					onChangePage: function (event, pageObj) {  //pageObj存储着关于页数等信息，即上面的属性
+						queryActivityByConditionForPage(pageObj.currentPage, pageObj.rowsPerPage)
+					} //当用户切换页号，自动执行该部分代码,可以返回切换页号后的页数和每页条数
+				})
+			}
+		})
 	}
 </script>
 </head>
@@ -133,7 +195,6 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<label for="create-appellation" class="col-sm-2 control-label">称呼</label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="create-appellation">
-								  <option></option>
 								  <c:forEach items="${appellationList}" var="app">
                                     <option value="${app.id}">${app.value}</option>
                                   </c:forEach>
@@ -175,7 +236,6 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<label for="create-state" class="col-sm-2 control-label">线索状态</label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="create-state">
-								  <option></option>
 								  <c:forEach items="${clueStateList}" var="cs">
                                         <option value="${cs.id}">${cs.value}</option>
                                   </c:forEach>
@@ -187,7 +247,6 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<label for="create-source" class="col-sm-2 control-label">线索来源</label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="create-source">
-								  <option></option>
 								  <c:forEach items="${sourceList}" var="sl">
                                       <option value="${sl.id}">${sl.value}</option>
                                   </c:forEach>
@@ -273,7 +332,6 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<label for="edit-call" class="col-sm-2 control-label">称呼</label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="edit-call">
-								  <option></option>
                                     <c:forEach items="${appellationList}" var="app">
                                         <option value="${app.id}">${app.value}</option>
                                     </c:forEach>
@@ -315,7 +373,6 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<label for="edit-status" class="col-sm-2 control-label">线索状态</label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="edit-status">
-								  <option></option>
                                     <c:forEach items="${clueStateList}" var="cs">
                                         <option value="${cs.id}">${cs.value}</option>
                                     </c:forEach>
@@ -327,7 +384,6 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<label for="edit-source" class="col-sm-2 control-label">线索来源</label>
 							<div class="col-sm-10" style="width: 300px;">
 								<select class="form-control" id="edit-source">
-								  <option></option>
                                     <c:forEach items="${sourceList}" var="sl">
                                         <option value="${sl.id}">${sl.value}</option>
                                     </c:forEach>
@@ -401,29 +457,29 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">名称</div>
-				      <input class="form-control" type="text">
+				      <input id="queryFullname" class="form-control" type="text">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">公司</div>
-				      <input class="form-control" type="text">
+				      <input id="queryCompany" class="form-control" type="text">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">公司座机</div>
-				      <input class="form-control" type="text">
+				      <input id="queryPhone" class="form-control" type="text">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">线索来源</div>
-					  <select class="form-control">
-					  	  <option></option>
+					  <select id="querySource" class="form-control">
+						  <option value="">无</option>
                           <c:forEach items="${sourceList}" var="sl">
                               <option value="${sl.id}">${sl.value}</option>
                           </c:forEach>
@@ -436,7 +492,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">所有者</div>
-				      <input class="form-control" type="text">
+				      <input id="queryOwner" class="form-control" type="text">
 				    </div>
 				  </div>
 				  
@@ -445,15 +501,15 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">手机</div>
-				      <input class="form-control" type="text">
+				      <input id="queryMphone" class="form-control" type="text">
 				    </div>
 				  </div>
 				  
 				  <div class="form-group">
 				    <div class="input-group">
 				      <div class="input-group-addon">线索状态</div>
-					  <select class="form-control">
-					  	<option></option>
+					  <select id="queryState" class="form-control">
+						  <option value="">无</option>
                           <c:forEach items="${clueStateList}" var="cs">
                               <option value="${cs.id}">${cs.value}</option>
                           </c:forEach>
@@ -461,7 +517,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				    </div>
 				  </div>
 
-				  <button type="submit" class="btn btn-default">查询</button>
+				  <button type="button" id="queryBtn" class="btn btn-default">查询</button>
 				  
 				</form>
 			</div>
@@ -478,7 +534,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				<table class="table table-hover">
 					<thead>
 						<tr style="color: #B3B3B3;">
-							<td><input type="checkbox" /></td>
+							<td><input type="checkbox" id="checkAll"/></td>
 							<td>名称</td>
 							<td>公司</td>
 							<td>公司座机</td>
@@ -488,8 +544,8 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<td>线索状态</td>
 						</tr>
 					</thead>
-					<tbody>
-						<tr>
+					<tbody id="tBody">
+						<%--<tr>
 							<td><input type="checkbox" /></td>
 							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">李四先生</a></td>
 							<td>动力节点</td>
@@ -508,12 +564,15 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
                             <td>广告</td>
                             <td>zhangsan</td>
                             <td>已联系</td>
-                        </tr>
+                        </tr>--%>
 					</tbody>
 				</table>
 			</div>
+			<br>
+			<br>
+			<div id="demo_pag1">
 			
-			<div style="height: 50px; position: relative;top: 60px;">
+			<%--<div style="height: 50px; position: relative;top: 60px;">
 				<div>
 					<button type="button" class="btn btn-default" style="cursor: default;">共<b>50</b>条记录</button>
 				</div>
@@ -550,6 +609,6 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			
 		</div>
 		
-	</div>
+	</div>--%>
 </body>
 </html>
