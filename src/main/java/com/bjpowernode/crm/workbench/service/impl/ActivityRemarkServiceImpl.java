@@ -1,7 +1,6 @@
 package com.bjpowernode.crm.workbench.service.impl;
 
 import com.bjpowernode.crm.workbench.domain.ActivityRemark;
-import com.bjpowernode.crm.workbench.mapper.ActivityMapper;
 import com.bjpowernode.crm.workbench.mapper.ActivityRemarkMapper;
 import com.bjpowernode.crm.workbench.service.ActivityRemarkService;
 import org.springframework.beans.factory.annotation.Autowired;

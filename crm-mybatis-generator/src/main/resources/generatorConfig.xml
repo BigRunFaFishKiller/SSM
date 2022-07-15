@@ -77,13 +77,12 @@
                selectByExampleQueryId="false">
         </table>-->
 
-        <!--
         <table tableName="tbl_clue" domainObjectName="Clue"
                enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false"
+               enableDeleteByExample="false" enableSelectByExamle="false"
                selectByExampleQueryId="false">
         </table>
-
+        <!--
         <table tableName="tbl_clue_activity_relation" domainObjectName="ClueActivityRelation"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
@@ -133,14 +132,14 @@
                        selectByExampleQueryId="false">
                 </table>
 
-
-                <table tableName="tbl_dictionary_value" domainObjectName="DictionaryValue"
+-->
+               <!-- <table tableName="tbl_dic_value" domainObjectName="DicValue"
                        enableCountByExample="false" enableUpdateByExample="false"
                        enableDeleteByExample="false" enableSelectByExample="false"
                        selectByExampleQueryId="false">
-                </table>
+                </table>-->
 
-
+<!--
                 <table tableName="tbl_activity" domainObjectName="Activity"
                        enableCountByExample="false" enableUpdateByExample="false"
                        enableDeleteByExample="false" enableSelectByExample="false"
@@ -148,12 +147,12 @@
                 </table>
 
 -->
-                <table tableName="tbl_activity_remark" domainObjectName="ActivityRemark"
+                <!--<table tableName="tbl_activity_remark" domainObjectName="ActivityRemark"
                        enableCountByExample="false" enableUpdateByExample="false"
                        enableDeleteByExample="false" enableSelectByExample="false"
                        selectByExampleQueryId="false">
                 </table>
-
+-->
 
         <!--<table tableName="tbl_transaction" domainObjectName="Transaction"
                enableCountByExample="false" enableUpdateByExample="false"

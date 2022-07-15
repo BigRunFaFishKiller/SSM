@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Author:大润发杀鱼匠
  * @Date:2022/7/5 12:11 crm-project
  */
-
 @Controller
 public class WorkbenchIndexController {
 
