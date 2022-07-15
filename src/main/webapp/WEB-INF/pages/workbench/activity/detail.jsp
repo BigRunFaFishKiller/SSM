@@ -171,8 +171,8 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						//关闭模态窗口
 						$("#editRemarkModal").modal("hide");
 						//刷新备注列表
-						$("#div_"+data.retData.id+" h5").text(data.retData.noteContent);
-						$("#div_"+data.retData.id+" small").text(" "+data.retData.editTime+" 由${sessionScope.sessionUser.name}修改");
+						$("#div_"+data.returnData.id+" h5").text(data.retData.noteContent);
+						$("#div_"+data.returnData.id+" small").text(" "+data.returnData.editTime+" 由${sessionScope.sessionUser.name}修改");
 					}else{
 						//提示信息
 						alert(data.message);
