@@ -167,7 +167,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				$.each(data.clueList, function (index, obj) {
 					html += "<tr>";
 					html += "<td><input type=\"checkbox\" value=' "+ obj.id +"'/></td>";
-					html += "<td><a style=\"text-decoration: none; cursor: pointer;\" onclick=\"window.location.href='detail.html';\">" + obj.fullname + "</a></td>";
+					html += "<td><a style=\"text-decoration: none; cursor: pointer;\" onclick=\"window.location.href='workbench/clue/detailClue.do?id="+ obj.id +"';\">" + obj.fullname + "</a></td>";
 					html += "<td>" + obj.company + "</td>";
 					html += "<td>" + obj.phone + "</td>";
 					html += "<td>" + obj.mphone + "</td>";
@@ -584,7 +584,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					<tbody id="tBody">
 						<%--<tr>
 							<td><input type="checkbox" /></td>
-							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">李四先生</a></td>
+							<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.jsp';">李四先生</a></td>
 							<td>动力节点</td>
 							<td>010-84846003</td>
 							<td>12345678901</td>
@@ -594,7 +594,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 						</tr>
                         <tr class="active">
                             <td><input type="checkbox" /></td>
-                            <td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.html';">李四先生</a></td>
+                            <td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href='detail.jsp';">李四先生</a></td>
                             <td>动力节点</td>
                             <td>010-84846003</td>
                             <td>12345678901</td>

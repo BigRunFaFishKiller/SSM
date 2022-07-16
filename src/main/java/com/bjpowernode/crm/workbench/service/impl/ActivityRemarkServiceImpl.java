@@ -1,12 +1,15 @@
 package com.bjpowernode.crm.workbench.service.impl;
 
+import com.bjpowernode.crm.workbench.domain.Activity;
 import com.bjpowernode.crm.workbench.domain.ActivityRemark;
+import com.bjpowernode.crm.workbench.mapper.ActivityMapper;
 import com.bjpowernode.crm.workbench.mapper.ActivityRemarkMapper;
 import com.bjpowernode.crm.workbench.service.ActivityRemarkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author:大润发杀鱼匠
@@ -38,4 +41,5 @@ public class ActivityRemarkServiceImpl implements ActivityRemarkService {
     public int saveEditActivityRemark(ActivityRemark activityRemark) {
         return activityRemarkMapper.updateActivityRemark(activityRemark);
     }
+
 }
