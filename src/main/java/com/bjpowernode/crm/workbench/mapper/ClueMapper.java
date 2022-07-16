@@ -76,4 +76,12 @@ public interface ClueMapper {
      * @return
      */
     int countClueByCondition(Map<String, Object> map);
+
+
+    /**
+     * 根据id批量删除线索
+     * @param ids
+     * @return
+     */
+    int deleteClueByIds(String[] ids);
 }

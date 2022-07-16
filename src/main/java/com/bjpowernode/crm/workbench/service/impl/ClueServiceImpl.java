@@ -31,6 +31,11 @@ public class ClueServiceImpl implements ClueService {
     }
 
     @Override
+    public int deleteClueByIds(String[] ids) {
+        return clueMapper.deleteClueByIds(ids);
+    }
+
+    @Override
     public int countClueByCondition(Map<String, Object> map) {
         return clueMapper.countClueByCondition(map);
     }

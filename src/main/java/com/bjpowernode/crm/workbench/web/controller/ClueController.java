@@ -104,4 +104,23 @@ public class ClueController {
     }
 
 
+    @RequestMapping("/workbench/clue/deleteClueByIds.do")
+    @ResponseBody
+    public Object deleteClueByIds(String[] id) {
+        ReturnObject returnObject = new ReturnObject();
+        try {
+            //调用Service方法
+            int ret = clueService.deleteClueByIds(id);
+            if(ret > 0) {
+                returnObject.setCode(Constants.RETURN_OBJECT_CODE_SUCCESS);
+            } else {
+                returnObject.setCode(Constants.RETURN_OBJECT_CODE_FAIL);
+                returnObject.setMessage("系统忙，请稍后重试");
+            }
+        } catch (Exception e) {
+            returnObject.setCode(Constants.RETURN_OBJECT_CODE_FAIL);
+            returnObject.setMessage("系统忙，请稍后重试");
+        }
+        return returnObject;
+    }
 }

@@ -80,8 +80,6 @@
     </where>
     order by c.create_time desc
     limit #{beginNo}, #{pageSize}
-
-
   </select>
   <select id="countClueByCondition" resultType="java.lang.Integer">
     select count(*)
@@ -121,6 +119,12 @@
     -->
     delete from tbl_clue
     where id = #{id,jdbcType=CHAR}
+  </delete>
+  <delete id="deleteClueByIds" parameterType="string">
+    delete from tbl_clue where id in
+    <foreach collection="array" item="id" separator="," open="(" close=")">
+      #{id}
+    </foreach>
   </delete>
   <insert id="insert" parameterType="com.bjpowernode.crm.workbench.domain.Clue" >
     <!--

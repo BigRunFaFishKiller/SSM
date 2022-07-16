@@ -120,4 +120,6 @@ public interface ActivityMapper {
      * @return
      */
     Activity selectActivityForDetailById(String id);
+
+
 }

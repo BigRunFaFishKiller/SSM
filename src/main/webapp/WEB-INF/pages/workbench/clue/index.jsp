@@ -30,6 +30,12 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
             $("#createClueModal").modal("show");
         });
 
+		//全选按钮添加单击事件
+		$("#checkAll").click(function () {
+			//如果全选按钮选择，列表均选中
+			$("#tBody input[type = 'checkbox']").prop("checked", this.checked);
+		})
+
 		//给"保存"按钮添加单击事件
         $("#saveCreateClueBtn").click(function () {
             //收集参数
@@ -79,7 +85,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
                         //关闭模态窗口
                         $("#createClueModal").modal("hide");
                         //刷新线索列表，显示第一页数据，保持每页显示条数不变(作业)
-						queryActivityByConditionForPage(1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
+						queryClueByConditionForPage(1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
                     }else{
                         //提示信息
                         alert(data.message);
@@ -97,8 +103,39 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			queryClueByConditionForPage(1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
 		})
 
+		//给删除按钮添加单击事件
+		$("#deleteActivityBtn").click(function () {
+			//收集参数
+			var checkedIds = $("#tBody input[type = 'checkbox']:checked");
+			if(checkedIds.size() == 0) {
+				alert("至少选中一条记录");
+				return;
+			}
+			//弹出提示窗口
+			if(window.confirm("确定删除吗？")) {
+				var ids = "";
+				$.each(checkedIds, function () {
+					ids += "id=" + this.value + "&"
+				})
+				ids = ids.substr(0, ids.length - 1);
+				//向后台发请求
+				$.ajax({
+					url: 'workbench/clue/deleteClueByIds.do',
+					data: ids,
+					type: 'post',
+					dataType: 'json',
+					success: function (data) {
+						if (data.code == "1") {
+							//刷新列表,显示第一页数据，保持每页数据不变
+							queryClueByConditionForPage(1, $("#demo_pag1").bs_pagination('getOption', 'rowsPerPage'));
+						} else {
+							alert(data.message);
+						}
+					}
+				})
+			}
+		})
 	});
-
 	//分页查询线索函数
 	function queryClueByConditionForPage(pageNo, pageSize){
 		//收集参数
@@ -129,7 +166,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				var html = "";
 				$.each(data.clueList, function (index, obj) {
 					html += "<tr>";
-					html += "<td><input type=\"checkbox\" /></td>";
+					html += "<td><input type=\"checkbox\" value=' "+ obj.id +"'/></td>";
 					html += "<td><a style=\"text-decoration: none; cursor: pointer;\" onclick=\"window.location.href='detail.html';\">" + obj.fullname + "</a></td>";
 					html += "<td>" + obj.company + "</td>";
 					html += "<td>" + obj.phone + "</td>";
@@ -153,7 +190,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					showRowsPerPage: true, //显示每页显示的条数信息
 					showRowsInfo: true, //显示记录信息
 					onChangePage: function (event, pageObj) {  //pageObj存储着关于页数等信息，即上面的属性
-						queryActivityByConditionForPage(pageObj.currentPage, pageObj.rowsPerPage)
+						queryClueByConditionForPage(pageObj.currentPage, pageObj.rowsPerPage)
 					} //当用户切换页号，自动执行该部分代码,可以返回切换页号后的页数和每页条数
 				})
 			}
@@ -525,7 +562,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				<div class="btn-group" style="position: relative; top: 18%;">
 				  <button type="button" class="btn btn-primary" id="createClueBtn"><span class="glyphicon glyphicon-plus"></span> 创建</button>
 				  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editClueModal"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
-				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+				  <button type="button" id="deleteActivityBtn" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>
 				
 				
