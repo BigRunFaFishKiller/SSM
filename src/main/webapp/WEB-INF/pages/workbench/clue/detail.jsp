@@ -55,7 +55,8 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 		//给"关联市场活动"按钮添加单击事件
 		$("#bundActivityBtn").click(function () {
 			//初始化工作
-
+			//清空搜索框
+			//$("#searchActivityTxt").html("");
 			//弹出"线索关联市场活动"的模态窗口
 			$("#bundModal").modal("show");
 		});
@@ -89,6 +90,46 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					$("#tBody").html(htmlStr);
 				}
 			});
+		});
+		//给关联按钮添加单击事件
+		$("#saveBundActivityBtn").click(function () {
+			//收集参数
+			var checkedIds = $("#tBody input[type='checkbox']:checked");
+			//表单验证
+			if(checkedIds.size() == 0) {
+				alert("请选择的要关联的市场活动");
+				return;
+			}
+			var ids = ""
+			$.each(checkedIds,function () {
+				ids += "activityId=" + this.value +"&";
+			})
+			ids += "clueId=" + ${clue.id};
+			$.ajax({
+				url:'workbench/clue/saveBound.do',
+				data:ids,
+				type:'post',
+				dataType:'json',
+				success:function (data) {
+					if(data.code == '1') {
+						$("#bundModal").modal("hide");
+						var html = "";
+						$.each(data.returnData,function (index,obj) {
+						html += "<tr>"
+						html += "<td>" + obj.name + "</td>"
+						html += "<td>" + obj.startDate + "</td>"
+						html += "<td>" + obj.endDate + "</td>"
+						html += "<td>" + obj.owner + "</td>"
+						html += "<td><a href=\"javascript:void(0);\" activityId=\""+ obj.id +"\"  style=\"text-decoration: none;\"><span class=\"glyphicon glyphicon-remove\"></span>解除关联</a></td>"
+						html += "</tr>"
+						});
+						$("#relationTBody").append(html);
+					} else {
+						alert(data.message);
+						$("#bundModal").modal("show");
+					}
+				}
+			})
 		});
 	});
 	
@@ -147,7 +188,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-					<button type="button" class="btn btn-primary" data-dismiss="modal">关联</button>
+					<button type="button" class="btn btn-primary" data-dismiss="modal" id="saveBundActivityBtn">关联</button>
 				</div>
 			</div>
 		</div>
@@ -337,7 +378,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 							<td></td>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody id="relationTBody">
 						<c:forEach items="${activityList}" var="act">
 							<tr>
 								<td>${act.name}</td>
