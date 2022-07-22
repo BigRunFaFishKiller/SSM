@@ -15,5 +15,8 @@ import java.util.Map;
 public interface TranService {
 
     List<Transaction> queryTranByConditionForPage(Map<String, Object> map);
+
     int queryTranCountsByConditionForPage(Map<String, Object> map);
+
+    int saveCreateTran(Map<String, Object> map);
 }

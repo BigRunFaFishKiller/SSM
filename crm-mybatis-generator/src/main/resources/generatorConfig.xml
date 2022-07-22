@@ -110,13 +110,13 @@
                selectByExampleQueryId="false">
         </table>
         -->
-        <!--
-        <table tableName="tbl_customer" domainObjectName="Customer"
+
+        <!--<table tableName="tbl_customer" domainObjectName="Customer"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
-        </table>
-
+        </table>-->
+<!--
         <table tableName="tbl_customer_remark" domainObjectName="CustomerRemark"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
@@ -152,17 +152,18 @@
                 </table>
 -->
 
-        <table tableName="tbl_tran" domainObjectName="Transaction"
+       <!-- <table tableName="tbl_tran" domainObjectName="Transaction"
                enableCountByExample="true" enableUpdateByExample="true"
                enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="true">
-        </table>
+        </table>-->
 
-<!--        <table tableName="tbl_transaction_history" domainObjectName="TransactionHistory"
+       <table tableName="tbl_tran_history" domainObjectName="TranHistory"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false">
         </table>
+        <!--
         <table tableName="tbl_transaction_remark" domainObjectName="TransactionRemark"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"

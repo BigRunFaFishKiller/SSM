@@ -22,6 +22,11 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 
 	$(function(){
 
+		//创建按钮添加单击事件
+		$("#createTranBtn").click(function () {
+			window.location.href="workbench/transaction/toSave.do";
+		})
+
 		queryTranByConditionForPage(1, 10);
 
 		//给查询按钮添加单击事件
@@ -87,7 +92,6 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 					showRowsInfo:true, //显示记录信息
 					onChangePage: function (event, pageObj) {  //pageObj存储着关于页数等信息，即上面的属性
 						queryTranByConditionForPage(pageObj.currentPage, pageObj.rowsPerPage)
-
 					} //当用户切换页号，自动执行该部分代码,可以返回切换页号后的页数和每页条数
 				});
 			}
@@ -182,7 +186,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			</div>
 			<div class="btn-toolbar" role="toolbar" style="background-color: #F7F7F7; height: 50px; position: relative;top: 10px;">
 				<div class="btn-group" style="position: relative; top: 18%;">
-				  <button type="button" class="btn btn-primary" onclick="window.location.href='save.html';"><span class="glyphicon glyphicon-plus"></span> 创建</button>
+				  <button type="button" class="btn btn-primary" id="createTranBtn"><span class="glyphicon glyphicon-plus"></span> 创建</button>
 				  <button type="button" class="btn btn-default" onclick="window.location.href='edit.html';"><span class="glyphicon glyphicon-pencil"></span> 修改</button>
 				  <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
 				</div>

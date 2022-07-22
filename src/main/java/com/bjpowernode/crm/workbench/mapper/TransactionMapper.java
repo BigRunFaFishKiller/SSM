@@ -105,4 +105,6 @@ public interface TransactionMapper {
     List<Transaction> selectTranByConditionForPage(Map<String, Object> map);
 
     int selectTranCountsByConditionForPage(Map<String, Object> map);
+
+    int insertTran(Transaction transaction);
 }
