@@ -104,7 +104,23 @@ public interface TransactionMapper {
      */
     List<Transaction> selectTranByConditionForPage(Map<String, Object> map);
 
+
+    /**
+     * 根据条件分页查询交易
+     * @param map
+     * @return
+     */
     int selectTranCountsByConditionForPage(Map<String, Object> map);
 
+
+    //创建交易
     int insertTran(Transaction transaction);
+
+
+    /**
+     * 根据id查询市场活动明细信息
+     * @param id
+     * @return
+     */
+    Transaction selectTranForDetailById(String id);
 }

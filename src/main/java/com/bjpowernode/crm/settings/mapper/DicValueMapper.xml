@@ -32,7 +32,7 @@
     from tbl_dic_value
     where id = #{id,jdbcType=CHAR}
   </select>
-  <select id="selectDicValueByTypeCode" resultType="com.bjpowernode.crm.settings.domain.DicValue">
+  <select id="selectDicValueByTypeCode" resultMap="BaseResultMap">
     select <include refid="Base_Column_List"></include>
     from tbl_dic_value
     where type_code = #{typeCode}

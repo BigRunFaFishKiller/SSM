@@ -1,6 +1,9 @@
 package com.bjpowernode.crm.workbench.mapper;
 
 import com.bjpowernode.crm.workbench.domain.TranHistory;
+import org.apache.poi.ss.formula.functions.T;
+
+import java.util.List;
 
 public interface TranHistoryMapper {
     /**
@@ -58,4 +61,12 @@ public interface TranHistoryMapper {
      * @return
      */
     int insertTranHistory(TranHistory tranHistory);
+
+
+    /**
+     * 根据交易id查询该交易所有明细信息
+     * @param id
+     * @return
+     */
+    List<TranHistory> selectTranHistoryForDetailById(String id);
 }

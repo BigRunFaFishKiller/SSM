@@ -8,9 +8,11 @@ import com.bjpowernode.crm.settings.mapper.DicValueMapper;
 import com.bjpowernode.crm.settings.service.DicValueService;
 import com.bjpowernode.crm.settings.service.UserService;
 import com.bjpowernode.crm.workbench.domain.Activity;
+import com.bjpowernode.crm.workbench.domain.TranHistory;
 import com.bjpowernode.crm.workbench.domain.Transaction;
 import com.bjpowernode.crm.workbench.service.ActivityService;
 import com.bjpowernode.crm.workbench.service.CustomerService;
+import com.bjpowernode.crm.workbench.service.TranHistoryService;
 import com.bjpowernode.crm.workbench.service.TranService;
 import com.bjpowernode.crm.workbench.service.impl.TranServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +37,7 @@ import java.util.ResourceBundle;
 public class TranController {
 
     @Autowired
-    private CustomerService customerService;
+    private TranHistoryService tranHistoryService;
 
     @Autowired
     private ActivityService activityService;
@@ -122,5 +124,21 @@ public class TranController {
             returnObject.setMessage("系统忙，请稍后重试");
         }
         return returnObject;
+    }
+
+
+    @RequestMapping("/workbench/transaction/detailTran.do")
+    public String detailTran(String id, HttpServletRequest request) {
+        Transaction transaction = tranService.queryTranForDetailById(id);
+        List<TranHistory> tranHistoryList = tranHistoryService.queryTranHistoryForDetailByTranId(id);
+        ResourceBundle bundle = ResourceBundle.getBundle("possibility");
+        String possibility = bundle.getString(transaction.getStage());
+        transaction.setPossibility(possibility);
+        //调用service方法查询所有交易阶段
+        List<DicValue> stageList = dicValueService.queryDicValueByTypeCode("stage");
+         request.setAttribute("stageList", stageList);
+        request.setAttribute("transaction", transaction);
+        request.setAttribute("tranHistoryList", tranHistoryList);
+        return "workbench/transaction/detail";
     }
 }

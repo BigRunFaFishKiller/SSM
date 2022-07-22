@@ -91,4 +91,9 @@ public class TranServiceImpl implements TranService {
         tranHistoryMapper.insertTranHistory(tranHistory);
         return i;
     }
+
+    @Override
+    public Transaction queryTranForDetailById(String id) {
+        return transactionMapper.selectTranForDetailById(id);
+    }
 }

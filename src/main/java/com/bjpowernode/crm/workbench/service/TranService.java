@@ -19,4 +19,6 @@ public interface TranService {
     int queryTranCountsByConditionForPage(Map<String, Object> map);
 
     int saveCreateTran(Map<String, Object> map);
+
+    Transaction queryTranForDetailById(String id);
 }
