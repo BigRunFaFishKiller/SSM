@@ -58,7 +58,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 			//清空搜索框
 			//$("#searchActivityTxt").html("");
 			//弹出"线索关联市场活动"的模态窗口
-			$("#bundModal").modal("show")
+			$("#bundModal").modal("show");
 		});
 
 		//给市场活动搜索框添加键盘弹起事件
@@ -91,6 +91,7 @@ String basePath=request.getScheme()+"://"+request.getServerName()+":"+request.ge
 				}
 			});
 		});
+
 		//给关联按钮添加单击事件
 		$("#saveBundActivityBtn").click(function () {
 			//收集参数

@@ -1,5 +1,6 @@
 package com.bjpowernode.crm.workbench.service;
 
+import com.bjpowernode.crm.workbench.domain.FunnelVO;
 import com.bjpowernode.crm.workbench.domain.Transaction;
 import org.apache.poi.ss.formula.functions.T;
 
@@ -21,4 +22,6 @@ public interface TranService {
     int saveCreateTran(Map<String, Object> map);
 
     Transaction queryTranForDetailById(String id);
+
+    List<FunnelVO> queryCountOfTranGroupByStage();
 }
